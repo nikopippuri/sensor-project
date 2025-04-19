@@ -43,19 +43,51 @@ A simple web-based temperature dashboard built with Flask and vanilla JavaScript
    cd // REPO // 
    pip install -r requirements.txt
 
-2.   **Set up .env file**
-        ```bash
-        API_KEY=your_openweathermap_api_key
+2. **🧪 Create the .env file**
+    In the root of the project:
+    ```
+    nano .env
 
-3.  **Run the Flask server**
-    ```bash
+    ```
+    Add your API key:
+    ```
+    API_KEY=your_openweather_api_key_here
+
+    ```
+    Save and exit: Ctrl + X, then Y, then Enter
+
+3.  **📦 Install required dependencies**
+
+    Python (Backend)
+    ```
+    sudo apt update
+    sudo apt install python3 python3-pip python3-venv git -y
+    pip3 install flask python-dotenv adafruit-circuitpython-dht
+    sudo apt install libgpiod2
+    ```
+    ⚠️ libgpiod2 is required for DHT sensor GPIO access.
+
+    Node/NPM (optional, if using frontend build tools)
+    ```
+
+    sudo apt install npm -y
+4.  **🚀 Start the application**
+    ```
     cd backend
     python3 app.py
 
-4. **Open in browser**
+5. **Open in browser**
 
     and visit:
+    ```
     http://localhost:5003
+
+## Sensor Wiring
+
+    Sensor Pin | Raspberry Pi GPIO
+-    " + " | 5V (Pin 2 or 4)
+-    " Out (S) " | GPIO17 (Pin 11)
+-    " - " | GND (Pin 6)
 
 ## 📸 Screenshots
 -   Kytkentäkaavio
