@@ -1,9 +1,3 @@
-
-
-const simulatedTemperature = 28;
-const simulatedHumidity = 60;
-const simulatedAir = "ON";
-
 // SIVUN LATAUS
 
 function loadPage(page) {
@@ -51,25 +45,36 @@ function loadSettingsLogic() {
 
 // TUUPPAA RASPERRYLTÄ TULEVAT ARVOT 
 
-function simulateRasperry() {
-document.getElementById("temperature").textContent = simulatedTemperature
-document.getElementById("humidity").textContent = simulatedHumidity
-document.getElementById("airMachine").textContent = simulatedAir
+function fetchSensorData() {
+  fetch('/sensor-data')
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        console.error("Virhe sensorin lukemisessa:", data.error);
+        return;
+      }
 
-// HALYTYS LIIAN KUUMASTA LAMPOTILASTA
+      const temp = data.temperature;
+      const humidity = data.humidity;
+      const air = "ON"; // Oletetaan edelleen että laite on päällä
+	const limit = parseFloat(localStorage.getItem("tempLimit"));
 
-const limit = parseFloat(localStorage.getItem("tempLimit"));
-if (!isNaN(limit) && simulatedTemperature > limit) {
-  const tempElement = document.getElementById("temperature");
-  if (tempElement) {
-    tempElement.style.backgroundColor = "#ff4d4d"; 
-    tempElement.style.color = "#fff"; 
-    tempElement.style.padding = "5px";
-    tempElement.style.borderRadius = "6px";
-    tempElement.style.fontWeight = "bold";
-  }
+      document.getElementById("temperature").textContent = temp;
+      document.getElementById("humidity").textContent = humidity;
+      document.getElementById("airMachine").textContent = air;
+
+
+      if (!isNaN(limit) && temp > limit) {
+        const tempElement = document.getElementById("temperature");
+        tempElement.style.backgroundColor = "#ff4d4d";
+        tempElement.style.color = "#fff";
+        tempElement.style.padding = "5px";
+        tempElement.style.borderRadius = "6px";
+        tempElement.style.fontWeight = "bold";
+      }
+    })
+    .catch(err => console.error("Virhe haettaessa sensoridataa:", err));
 }
-} 
 
 
 // HAETAAN OPENWEATHERISTA HALUTUN KAUPUNGIN TÄMÄNHETKINEN SÄÄ
@@ -81,8 +86,8 @@ function fetchWeatherData() {
     .then(response => response.json())
     .then(data => {
       if (data.main) {
-        console.log("Säädatan vastaus:", data);
-        simulateRasperry();
+//        console.log("Säädatan vastaus:", data);
+        fetchSensorData();
 
         document.getElementById("weather-city").textContent = city;
         document.getElementById("temp").textContent = data.main.temp;
@@ -104,7 +109,7 @@ window.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const page = e.target.getAttribute("data-page");
       loadPage(page);
-      simulateRasperry();
+      fetchSensorData();
     });
   });
 });

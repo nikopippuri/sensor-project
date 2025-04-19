@@ -2,10 +2,11 @@ from flask import Flask, request, send_from_directory, jsonify
 from dotenv import load_dotenv
 import requests
 import os
+import Adafruit_DHT
 
 # Lataa .env-tiedosto
 
-load_dotenv()  
+load_dotenv()
 api_key = os.getenv("API_KEY")
 
 # Flask alkumääritys
@@ -27,5 +28,22 @@ def get_weather():
     response = requests.get(url)
     return jsonify(response.json())
 
+# Haetaan todelliset arvot kayttaen sensoreita
+
+@app.route("/sensor-data")
+def sensor_data():
+    sensor = Adafruit_DHT.DHT11
+    gpio_pin = 17
+
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio_pin, retries=5, delay_seconds=1)
+
+    if humidity is not None and temperature is not None:
+        return jsonify({
+            "temperature": round(temperature, 1),
+            "humidity": round(humidity, 1)
+        })
+    else:
+        return jsonify({"error": "Sensor reading failed"}), 500
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002)
+    app.run(host='0.0.0.0', port=5003)
