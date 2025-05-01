@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import requests
 import os
 import Adafruit_DHT
+import subprocess
 
 # Lataa .env-tiedosto
 
@@ -44,6 +45,17 @@ def sensor_data():
         })
     else:
         return jsonify({"error": "Sensor reading failed"}), 500
+    
+@app.route("/ilmastointi", methods=["POST"])
+def kaynnista_ilmastointi():
+    ir_file = "power_signal.ir"
+    device = "/dev/lirc1"
+
+    try:
+        subprocess.run(["ir-ctl", "-d", device, "-s", ir_file], check=True)
+        return jsonify({"status": "success", "message": "Ilmastointilaite käynnistetty"})
+    except subprocess.CalledProcessError as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003)

@@ -45,6 +45,8 @@ function loadSettingsLogic() {
 
 // TUUPPAA RASPERRYLTÄ TULEVAT ARVOT 
 
+let ilmastointiPaalla = false;
+
 function fetchSensorData() {
   fetch('/sensor-data')
     .then(res => res.json())
@@ -56,14 +58,12 @@ function fetchSensorData() {
 
       const temp = data.temperature;
       const humidity = data.humidity;
-      const air = "ON"; // Oletetaan edelleen että laite on päällä
-	const limit = parseFloat(localStorage.getItem("tempLimit"));
+      const limit = parseFloat(localStorage.getItem("tempLimit"));
 
       document.getElementById("temperature").textContent = temp;
       document.getElementById("humidity").textContent = humidity;
-      document.getElementById("airMachine").textContent = air;
 
-
+      // Tarkistetaan lämpötilaraja
       if (!isNaN(limit) && temp > limit) {
         const tempElement = document.getElementById("temperature");
         tempElement.style.backgroundColor = "#ff4d4d";
@@ -71,11 +71,27 @@ function fetchSensorData() {
         tempElement.style.padding = "5px";
         tempElement.style.borderRadius = "6px";
         tempElement.style.fontWeight = "bold";
+
+        // Lähetä käynnistyskomento vain kerran
+        if (!ilmastointiPaalla) {
+          fetch('/ilmastointi', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+              console.log("Ilmastointi aktivoitu:", data);
+              ilmastointiPaalla = true;
+              document.getElementById("airMachine").textContent = "PÄÄLLÄ";
+            })
+            .catch(err => console.error("Virhe ilmastointikomennossa:", err));
+        }
+      } else {
+        ilmastointiPaalla = false;
+        document.getElementById("temperature").style = "";
+        document.getElementById("airMachine").textContent = "--";
       }
+
     })
     .catch(err => console.error("Virhe haettaessa sensoridataa:", err));
 }
-
 
 // HAETAAN OPENWEATHERISTA HALUTUN KAUPUNGIN TÄMÄNHETKINEN SÄÄ
 
@@ -96,7 +112,7 @@ function fetchWeatherData() {
       }
     })
     .catch(err => console.error("Virhe haettaessa säätietoja:", err));
-}
+};
 
 
 // ALUSTETAAN SIVU

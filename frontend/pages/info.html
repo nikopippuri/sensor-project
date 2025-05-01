@@ -1,8 +1,12 @@
     <section id="info" class="page">
       <h2>Projektin kuvaus</h2>
-      <p>Tämä projekti toteuttaa selainpohjaisen dashboardin, joka vastaanottaa Raspberry Pi:n lukemia anturitietoja ja esittää ne käyttäjälle reaaliaikaisesti.</p>
+      <p>Tämä projekti toteuttaa selainpohjaisen monitorointi- ja hallintapaneelin, 
+        joka vastaanottaa Raspberry Pi:n lukemat lämpötila ja kosteustiedot, sekä esittää ne käyttäjälle reaaliaikaisesti.</p>
+      <p>Käyttäjä määrittää huoneiston lämpötilalle raja-arvon, jonka ylittyessä viilentävä ilmastointikone aktivoituu päälle</p>
       <p>Tämän lisäksi käyttäjän tulee määrittää haluamansa kaupunki, jonka tämänhetkinen säätila haetaan OpenWeatherin palvelusta ja esitetään käyttäjälle.</p>
-      <p>Frontend on rakennettu HTML, CSS ja JavaScript -tekniikoilla, ja datan lähde on omassa verkossa oleva laitteisto (Arduino / Raspberry Pi).</p>
+      <p>Frontend on rakennettu HTML, CSS ja JavaScript -tekniikoilla, ja datan lähde on omassa verkossa oleva laitteisto (Raspberry Pi 3b +).</p>
       <p>Reaaliaikainen ulkolämpätila haetaan OpenWeatherMap API 2.5:sta ja tallennetaan localStorageen. </p>
+      <p>Backend, joka välittää tiedoja selaimen ja Raspberryn välillä on rakennettu Pythonilla ja Flaskilla. </p>
+      <p><strong>Tämä on keskeneräinen prototyyppi. Käyttö tapahtuu käyttäjän omalla vastuulla, eikä virheettömyyttä voida taata.</strong></p>
     </section>
 
