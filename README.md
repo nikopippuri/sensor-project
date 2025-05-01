@@ -1,6 +1,13 @@
-# 🌡️ Indoor & Outdoor Temperature Monitor with Raspberry Pi
+# Weather 🌦️ and cooling 💨 APP 🐶
 
-A simple web-based temperature dashboard built with Flask and vanilla JavaScript. The system fetches **outdoor weather data** from OpenWeatherMap and reads **indoor temperature and humidity** using a DHT11 sensor connected to a **Raspberry Pi 3 B+**.
+## ℹ️ About
+
+This project is a browser-based monitoring and control panel that displays real-time temperature and humidity data from a Raspberry Pi device. Users can set a temperature threshold to automatically trigger a cooling system, and view current weather data for a selected city via the OpenWeatherMap API.
+
+The frontend is built with HTML, CSS, and JavaScript, while the backend uses Python and Flask to handle communication between the Raspberry Pi and the browser.
+
+⚠️ This is a work-in-progress prototype and provided as-is. Use at your own risk.
+
 
 ---
 
@@ -16,9 +23,14 @@ A simple web-based temperature dashboard built with Flask and vanilla JavaScript
 ---
 
 ## 🔧 Hardware
+
 -   Raspberry Pi 3 B+
 
--   DHT11 sensor (connected to GPIO)
+-   DHT11 sensor
+
+-   3Pin KY-022 TL1838 VS1838B 1838 Universal IR Infrared Sensor Receiver Module
+
+-   KY-005 Infrared Transmitter Module
 
 -   Jumper wires
 
@@ -28,71 +40,50 @@ A simple web-based temperature dashboard built with Flask and vanilla JavaScript
 
 - Fetches current **outdoor weather** data for a chosen city
 - Reads **indoor temperature and humidity** via GPIO
-- Highlights temperature and starts air conditioner if it exceeds user-defined threshold.
+- Highlights temperature and starts air cooling machine if it exceeds user-defined threshold.
 - Saves city and alert limit to **localStorage**
 - Simple **responsive UI** accessible via desktop or mobile browser
 - `.env` file used to keep API keys secure
 
 ---
 
-## 🚀 Getting Started
+## 🚧 Getting Started – Instructions Coming Soon
 
-1. **Clone repository and install dependencies**  
-   ```
-   git clone // REPO //
-   cd // REPO // 
-   pip install -r requirements.txt
+Setup instructions for this project are currently being written.
 
-2. **🧪 Create the .env file**
-    In the root of the project:
-    ```
-    nano .env
+In a future update, this section will include a complete guide for running the project in a Docker container, along with all necessary configuration steps.
 
-    ```
-    Add your API key:
-    ```
-    API_KEY=your_openweather_api_key_here
+🔗 A link to the Docker setup guide will be provided here when available.
 
-    ```
-    Save and exit: Ctrl + X, then Y, then Enter
+## 📟 Sensor Wiring
 
-3.  **📦 Install required dependencies**
+| Sensor Pin | Raspberry Pi GPIO      |
+|------------|------------------------|
+|Tempeture and humidity sensor|
+| `+`        | 5V (Pin 2)    |
+| `Out (S)`  | GPIO17 (Pin 11)        |
+| `-`        | GND (Pin 6)            |
+|Infrared receiver|
+| `+`        | 3V (Pin 1)    |
+| `Out (S)`  | GPIO18 (Pin 12)        |
+| `-`        | GND (Pin 14)           |
+|Infrared trasmitter|
+| `+`        | 5V (Pin 4)    |
+| `Out (S)`  | GPIO27 (Pin 13)        |
+| `-`        | GND (Pin 34)           |
 
-    Python (Backend)
-    ```
-    sudo apt update
-    sudo apt install python3 python3-pip python3-venv git -y
-    pip3 install flask python-dotenv adafruit-circuitpython-dht
-    sudo apt install libgpiod2
-    ```
-    ⚠️ libgpiod2 is required for DHT sensor GPIO access.
-
-    Node/NPM (optional, if using frontend build tools)
-    ```
-
-    sudo apt install npm -y
-4.  **🚀 Start the application**
-    ```
-    cd backend
-    python3 app.py
-
-5. **Open in browser**
-
-    and visit:
-    ```
-    http://localhost:5003
-
-## Sensor Wiring
-
-    Sensor Pin | Raspberry Pi GPIO
--    " + " | 5V (Pin 2 or 4)
--    " Out (S) " | GPIO17 (Pin 11)
--    " - " | GND (Pin 6)
 
 ## 📸 Screenshots
--   Kytkentäkaavio
--   Mobiili
--   Desktoop
+
+### 🖥️ Desktop
+
+ <img src="images/desktop.png" width="100%">
+
+### 📱 Mobile
+<img src="images/mobile.png" width="45%">
+
+### 🛠️ Prototype
+<img src="images/prototype.jpg" width="80%">
 
 ## 📝 License
 -   MIT License
